@@ -1,54 +1,54 @@
 ---
 - hosts: all
   become: true
-  tasks:
-  
   vars:
     hostname: "R1"
     enable_secret: "class"
     console_password: = "cisco"
     vty_password: = "cisco"
-    
-    - name: Enable
-      ios_config:
-        lines: ['enable']
 
-    - name: Configure terminal
-      ios_config:
-        commands: ['configure terminal']
+  tasks:
 
-    - name: Set hostname
-      ios_config:
-        commands: ['hostname {{ hostname }}']
+  - name: Enable
+    ios_config:
+      lines: ['enable']
 
-    - name: Set enable secret
-      ios_config:
-        commands: ['enable secret {{ enable_secret }}']
+  - name: Configure terminal
+    ios_config:
+      commands: ['configure terminal']
 
-    - name: Encrypt service password
-      ios_config:
-        commands: ['service password-encryption']
+  - name: Set hostname
+    ios_config:
+      commands: ['hostname {{ hostname }}']
 
-    - name: Set banner message
-      ios_config:
-        commands: ['banner motd "Unauthorized Person Only"']
+  - name: Set enable secret
+    ios_config:
+      commands: ['enable secret {{ enable_secret }}']
 
-    - name: Configure console line
-      ios_config:
-        commands:
-          - 'line console 0'
-          - 'password {{ console_password }}'
-          - 'login'
-          - 'exit'
+  - name: Encrypt service password
+    ios_config:
+      commands: ['service password-encryption']
 
-    - name: Configure VTY lines
-      ios_config:
-        commands:
-          - 'line vty 0 15'
-          - 'password {{ console_password }}'
-          - 'login'
-          - 'exit'
+  - name: Set banner message
+    ios_config:
+      commands: ['banner motd "Unauthorized Person Only"']
 
-    - name: Save config
-      ios_config:
-        commands: ['do show running-config', 'do copy running-config startup-config']
+  - name: Configure console line
+    ios_config:
+      commands:
+        - 'line console 0'
+        - 'password {{ console_password }}'
+        - 'login'
+        - 'exit'
+
+  - name: Configure VTY lines
+    ios_config:
+      commands:
+        - 'line vty 0 15'
+        - 'password {{ console_password }}'
+        - 'login'
+        - 'exit'
+
+  - name: Save config
+    ios_config:
+      commands: ['do show running-config', 'do copy running-config startup-config']
